@@ -37,7 +37,7 @@ package com.faurecia.westworks.omega.gmLanController
 		public static const CUSHION_FRONT_UP:String = 	"06 AE 01 AA A8 80 00";
 		//public static const CUSHION_FRONT_UP:String = 	"ATSH 25D";
 		public static const CUSHION_FRONT_DOWN:String = "06 AE 01 AA A8 40 00";
-		public static const CUSHION_REAR_UP:String = 	"06 AE 01 AA A8 20 00";
+		public static const CUSHION_REAR_UP:String   = 	"06 AE 01 AA A8 20 00";
 		public static const CUSHION_REAR_DOWN:String = 	"06 AE 01 AA A8 10 00";
 		
 		public static const SEAT_FOWARD:String = 		"06 AE 01 AA A8 08 00";

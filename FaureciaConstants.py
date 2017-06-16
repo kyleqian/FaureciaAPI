@@ -1,7 +1,15 @@
+###
+# API Constants
+###
+
 ODB_IP = "192.168.0.10"
 ODB_PORT = 35000
 SIGNAL_TIMEOUT = 0.05
 KEEPALIVE_TIMER = 3
+
+###
+# Incomplete list of control strings
+###
 
 STARTUP_SEQUENCE = ["AT S0", "AT H1", "AT AL", "AT V1", "ST P63", "AT CAF0", "AT R0", "AT SH100", "ST CSWM2", "AT BI", "AT RTR", "ST CSWM3", "ST P61"]
 KEEPALIVE_SEQUENCE = ["AT SH 101", "FE013E0000000000", "AT SH 63D", "00 7F 00 00 00 00 00 00"]

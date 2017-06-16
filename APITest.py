@@ -4,7 +4,6 @@ from FaureciaAPI import FaureciaAPI
 ###
 # Hacky API tester
 ###
-
 if __name__ == "__main__":
   f = FaureciaAPI()
   while True:

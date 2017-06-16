@@ -11,8 +11,8 @@ class FaureciaAPI:
     self.socket_client.connect((ODB_IP, ODB_PORT))
     print "Socket client connected!"
 
-    self.command_queue = Queue.Queue()
-    self.command_queue.put(tuple(STARTUP_SEQUENCE))
+    self.command_queue = Queue.Queue() # Thread-safe queue
+    self.command_queue.put(tuple(STARTUP_SEQUENCE)) # Start queue off with startup sequence
 
     self.running = True
     self.command_thread = threading.Thread(target=self.__send_command)
