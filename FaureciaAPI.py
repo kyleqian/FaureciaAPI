@@ -1,34 +1,64 @@
 import socket
+import Queue
+import threading
 from time import sleep
+from FaureciaConstants import *
 
-def main():
-  MBM_CONTROLS_OFF = "06 AE 28 00 00 00 00"
-  CUSHION_UP = "06 AE 01 AA A8 A0 00"
-  CUSHION_DOWN = "06 AE 01 AA A8 50 00"
-  HEADREST_UP = "06 AE 28 0A AA 08 00"
-  HEADREST_DOWN = "06 AE 28 0A AA 04 00"
-  LUMBAR_UP = "06 AE 01 AA A8 00 80"
-  LUMBAR_DOWN = "06 AE 01 AA A8 00 40"
-  HEADREST_FORWARD = "06 AE 28 0A AA 02 00"
-  HEADREST_REARWARD = "06 AE 28 0A AA 01 00"
+class FaureciaAPI:
+  def __init__(self):
+    print "Establishing socket..."
+    self.socket_client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    self.socket_client.connect((ODB_IP, ODB_PORT))
+    print "Socket client connected!"
 
-  print "Connecting..."
-  socketClient = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-  socketClient.connect(("192.168.0.10", 35000))
-  print "Connected!"
+    self.command_queue = Queue.Queue()
+    self.command_queue.put(tuple(STARTUP_SEQUENCE))
 
-  startUpSeq = ["AT S0", "AT H1", "AT AL", "AT V1", "ST P63", "AT CAF0", "AT R0", "AT SH100", "ST CSWM2", "AT BI", "AT RTR", "ST CSWM3", "ST P61"]
-  for s in startUpSeq:
-    socketClient.send(s + "\r")
-    sleep(0.05)
+    self.running = True
+    self.command_thread = threading.Thread(target=self.__send_command)
+    self.command_thread.start()
+    self.keep_alive_thread = threading.Thread(target=self.__keep_alive)
+    self.keep_alive_thread.start()
+    print "Threads started!"
 
-  socketClient.send("AT SH 25D\r")
-  sleep(0.05)
-  socketClient.send(HEADREST_FORWARD + "\r")
-  sleep(0.5)
-  # socketClient.send(MBM_CONTROLS_OFF + "\r")
+  def command(self):
+    pass
 
-  print "End"
+  def command_raw(self, command):
+    self.command_queue.put((COMMAND_HEADER, command))
 
-if __name__ == "__main__":
-  main()
+  def close(self):
+    print "Closing FaureciaAPI..."
+    self.running = False
+    self.command_queue.put(False)
+    self.command_thread.join()
+    self.keep_alive_thread.join()
+    self.socket_client.close()
+    print "Closed FaureciaAPI!"
+
+  ### PRIVATE ###
+
+  def __keep_alive(self):
+    while True:
+      if not self.running: return
+      self.command_queue.put(tuple(KEEPALIVE_SEQUENCE))
+      sleep(KEEPALIVE_TIMER)
+
+  def __send_command(self):
+    while True:
+      command_tuple = self.command_queue.get() # Blocks until next available item
+
+      if not isinstance(command_tuple, tuple):
+        if self.running:
+          raise "Command queue must only contain tuples!!!"
+        else:
+          print "Closing command thread..."
+          return
+
+      for c in command_tuple:
+        self.socket_client.send(c + "\r")
+        print "Sent command: " + c
+        sleep(SIGNAL_TIMEOUT)
+
+# if __name__ == "__main__":
+#   main()
