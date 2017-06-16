@@ -16,8 +16,8 @@ class FaureciaAPI:
 
     self.running = True
     self.command_thread = threading.Thread(target=self.__send_command)
-    self.command_thread.start()
     self.keep_alive_thread = threading.Thread(target=self.__keep_alive)
+    self.command_thread.start()
     self.keep_alive_thread.start()
     print "Threads started!"
 
