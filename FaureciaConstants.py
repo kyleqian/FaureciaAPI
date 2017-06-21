@@ -9,7 +9,7 @@ KEEPALIVE_TIMER = 3 # Send keep alive string every 3 seconds
 
 ###
 # Incomplete list of control strings
-# Copied from FaureciaAPI/OmegaGmLanController/src/com/faurecia/westworks/omega/gmLanController/OmegaControlStrings.as
+# Copied from FaureciaAPI/legacy/OmegaGmLanController/src/com/faurecia/westworks/omega/gmLanController/OmegaControlStrings.as
 ###
 
 STARTUP_SEQUENCE = ["AT S0", "AT H1", "AT AL", "AT V1", "ST P63", "AT CAF0", "AT R0", "AT SH100", "ST CSWM2", "AT BI", "AT RTR", "ST CSWM3", "ST P61"]
