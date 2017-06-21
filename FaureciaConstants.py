@@ -2,13 +2,14 @@
 # API Constants
 ###
 
-ODB_IP = "192.168.0.10"
-ODB_PORT = 35000
-SIGNAL_TIMEOUT = 0.05
-KEEPALIVE_TIMER = 3
+OBD_IP = "192.168.0.10"
+OBD_PORT = 35000
+SIGNAL_TIMEOUT = 0.05 # There needs to be a delay between messages; the app itself seems to use 50ms
+KEEPALIVE_TIMER = 3 # Send keep alive string every 3 seconds
 
 ###
 # Incomplete list of control strings
+# Copied from FaureciaAPI/OmegaGmLanController/src/com/faurecia/westworks/omega/gmLanController/OmegaControlStrings.as
 ###
 
 STARTUP_SEQUENCE = ["AT S0", "AT H1", "AT AL", "AT V1", "ST P63", "AT CAF0", "AT R0", "AT SH100", "ST CSWM2", "AT BI", "AT RTR", "ST CSWM3", "ST P61"]

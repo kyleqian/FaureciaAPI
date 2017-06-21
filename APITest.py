@@ -8,7 +8,7 @@ from FaureciaAPI import FaureciaAPI
 if __name__ == "__main__":
   f = FaureciaAPI()
   while True:
-    command = raw_input()
+    command = raw_input() # Type in literal names of constants to be eval'd
     if not command: break
     try:
       command = eval(command)
